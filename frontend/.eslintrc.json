@@ -33,7 +33,8 @@
       {
         "assert": "either"
       }
-    ]
+    ],
+    "react/prop-types": 0
   },
   "settings": {
     "import/resolver": {
