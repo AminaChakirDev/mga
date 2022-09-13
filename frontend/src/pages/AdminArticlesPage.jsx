@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import moment from "moment";
 
 export default function AdminArticlesPage() {
+  const navigate = useNavigate();
+
   const [articles, setArticles] = useState("");
 
   useEffect(() => {
@@ -25,10 +28,13 @@ export default function AdminArticlesPage() {
           </thead>
           <tbody>
             {articles.map((article) => (
-              <tr key={article.id}>
+              <tr
+                key={article.id}
+                onClick={() => navigate(`/admin/articles/${article.id}`)}
+              >
                 <td>{article.title}</td>
-                <td>{article.createdAt}</td>
-                <td>{article.updatedAt}</td>
+                <td>{moment(article.createdAt).format("DD-MM-YYYY")}</td>
+                <td>{moment(article.updatedAt).format("DD-MM-YYYY")}</td>
               </tr>
             ))}
           </tbody>

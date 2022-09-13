@@ -5,6 +5,12 @@ class ArticleManager extends AbstractManager {
     super({ table: "article" });
   }
 
+  findLatest() {
+    return this.connection.query(
+      `select * from ${this.table} where published = 1 order by createdAt desc limit 3`
+    );
+  }
+
   insert(article) {
     return this.connection.query(
       `insert into ${this.table} (title, content, createdAt, updatedAt, published, slug) values (?,?,?,?,?,?)`,

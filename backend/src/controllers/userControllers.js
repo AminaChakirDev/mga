@@ -1,7 +1,7 @@
 const models = require("../models");
 
 const getAll = (req, res) => {
-  models.article
+  models.user
     .findAll()
     .then(([rows]) => {
       res.send(rows);
@@ -12,9 +12,9 @@ const getAll = (req, res) => {
     });
 };
 
-const getLatest = (req, res) => {
-  models.article
-    .findLatest()
+const getAllWithPoster = (req, res) => {
+  models.user
+    .findAllWithPoster()
     .then(([rows]) => {
       res.send(rows);
     })
@@ -25,7 +25,7 @@ const getLatest = (req, res) => {
 };
 
 const getById = (req, res) => {
-  models.article
+  models.user
     .find(req.params.id)
     .then(([rows]) => {
       if (rows[0] == null) {
@@ -41,14 +41,14 @@ const getById = (req, res) => {
 };
 
 const update = (req, res) => {
-  const article = req.body;
+  const user = req.body;
 
   // TODO validations (length, format...)
 
-  article.id = parseInt(req.params.id, 10);
+  user.id = parseInt(req.params.id, 10);
 
-  models.article
-    .update(article)
+  models.user
+    .update(user)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -62,15 +62,15 @@ const update = (req, res) => {
     });
 };
 
-const post = (req, res) => {
-  const article = req.body;
+const add = (req, res) => {
+  const user = req.body;
 
   // TODO validations (length, format...)
 
-  models.article
-    .insert(article)
+  models.user
+    .insert(user)
     .then(([result]) => {
-      res.location(`/articles/${result.insertId}`).sendStatus(201);
+      res.location(`/users/${result.insertId}`).sendStatus(201);
     })
     .catch((err) => {
       console.error(err);
@@ -79,7 +79,7 @@ const post = (req, res) => {
 };
 
 const destroy = (req, res) => {
-  models.article
+  models.user
     .delete(req.params.id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
@@ -96,9 +96,9 @@ const destroy = (req, res) => {
 
 module.exports = {
   getAll,
-  getLatest,
+  getAllWithPoster,
   getById,
   update,
-  post,
+  add,
   destroy,
 };

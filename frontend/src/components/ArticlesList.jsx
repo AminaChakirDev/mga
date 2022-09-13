@@ -8,7 +8,7 @@ export default function ArticlesList() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/articles`)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/articles/latest`)
       .then((response) => response.data)
       .then((data) => setArticles(data));
   }, []);
