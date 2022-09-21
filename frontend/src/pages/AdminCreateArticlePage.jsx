@@ -1,7 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
+import CategoriesCheckbox from "@components/CategoriesCheckbox";
+import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminCreateArticlePage() {
+  const navigate = useNavigate();
+
   const [article, setArticle] = useState({
     title: "",
     content: "",
@@ -9,15 +14,23 @@ export default function AdminCreateArticlePage() {
     updatedAt: null,
     published: 0,
     slug: "",
+    categories: [],
   });
+
+  const [selectedCategories, setSelectedCategories] = useState("");
 
   const postArticle = () => {
     axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/articles`, { ...article })
+      .post(`${import.meta.env.VITE_BACKEND_URL}/articles`, {
+        ...article,
+        createdAt: moment().locale("fr").format("YYYY-MM-DD"),
+        categories: selectedCategories,
+      })
       .then((response) => {
         console.error(response);
         console.error(response.data);
       });
+    navigate("/admin/articles");
   };
 
   return (
@@ -50,6 +63,10 @@ export default function AdminCreateArticlePage() {
               content: e.target.value,
             })
           }
+        />
+        <CategoriesCheckbox
+          selectedCategories={selectedCategories}
+          setSelectedCategories={setSelectedCategories}
         />
         <input type="submit" value="Créer un article" />
       </form>

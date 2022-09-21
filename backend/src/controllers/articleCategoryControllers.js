@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-expressions */
 const models = require("../models");
 
 const getAll = (req, res) => {
-  models.article
-    .findAllWithCategory()
+  models.article_category
+    .findAll()
     .then(([rows]) => {
       res.send(rows);
     })
@@ -13,9 +12,9 @@ const getAll = (req, res) => {
     });
 };
 
-const getLatest = (req, res) => {
-  models.article
-    .findLatest()
+const getAllByArticleId = (req, res) => {
+  models.article_category
+    .findAllByArticleId(req.params.id)
     .then(([rows]) => {
       res.send(rows);
     })
@@ -26,8 +25,8 @@ const getLatest = (req, res) => {
 };
 
 const getById = (req, res) => {
-  models.article
-    .findWithCategory(req.params.id)
+  models.article_category
+    .find(req.params.id)
     .then(([rows]) => {
       if (rows[0] == null) {
         res.sendStatus(404);
@@ -42,21 +41,14 @@ const getById = (req, res) => {
 };
 
 const update = (req, res) => {
-  const article = req.body;
+  const articleCategory = req.body;
 
   // TODO validations (length, format...)
 
-  article.id = parseInt(req.params.id, 10);
+  articleCategory.id = parseInt(req.params.id, 10);
 
-  models.article
-    .update(article)
-    .then(models.article.deleteCategories(article.id))
-    .then(
-      article.categories &&
-        article.categories.map((category) =>
-          models.article.insertCategories(article.id, category)
-        )
-    )
+  models.article_category
+    .update(articleCategory)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -71,21 +63,14 @@ const update = (req, res) => {
 };
 
 const post = (req, res) => {
-  const article = req.body;
+  const articleCategory = req.body;
 
   // TODO validations (length, format...)
 
-  models.article
-    .insert(article)
+  models.article_category
+    .insert(articleCategory)
     .then(([result]) => {
-      res
-        .location(`/articles/${result.insertId}`)
-        .status(201)
-        .send(`${result.insertId}`);
-      article.categories &&
-        article.categories.map((category) =>
-          models.article.insertCategories(`${result.insertId}`, category)
-        );
+      res.location(`/articles-categories/${result.insertId}`).sendStatus(201);
     })
     .catch((err) => {
       console.error(err);
@@ -93,9 +78,28 @@ const post = (req, res) => {
     });
 };
 
-const destroy = (req, res) => {
-  models.article
-    .delete(req.params.id)
+const removeCategory = (req, res) => {
+  const { articleId } = req.params;
+  const { categoryId } = req.params;
+
+  models.article_category
+    .removeCategoryFromArticle(articleId, categoryId)
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+const deleteAllByArticleId = (req, res) => {
+  models.article_category
+    .deleteByArticleId(req.params.id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -111,9 +115,10 @@ const destroy = (req, res) => {
 
 module.exports = {
   getAll,
-  getLatest,
+  getAllByArticleId,
   getById,
   update,
   post,
-  destroy,
+  removeCategory,
+  deleteAllByArticleId,
 };

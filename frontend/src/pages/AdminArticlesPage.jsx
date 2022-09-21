@@ -21,9 +21,11 @@ export default function AdminArticlesPage() {
         <table>
           <thead>
             <tr>
+              <th>Id</th>
               <th>Titre</th>
               <th>Ajouté le</th>
               <th>Modifié le</th>
+              <th>Catégories</th>
             </tr>
           </thead>
           <tbody>
@@ -32,9 +34,22 @@ export default function AdminArticlesPage() {
                 key={article.id}
                 onClick={() => navigate(`/admin/articles/${article.id}`)}
               >
+                <td>{article.id}</td>
                 <td>{article.title}</td>
                 <td>{moment(article.createdAt).format("DD-MM-YYYY")}</td>
-                <td>{moment(article.updatedAt).format("DD-MM-YYYY")}</td>
+                <td>
+                  {article.updatedAt
+                    ? moment(article.updatedAt).format("DD-MM-YYYY")
+                    : ""}
+                </td>
+                <td>
+                  <ul>
+                    {article.categories &&
+                      article.categories.map((category) => (
+                        <li key={category.value}>{category.label}</li>
+                      ))}
+                  </ul>
+                </td>
               </tr>
             ))}
           </tbody>
