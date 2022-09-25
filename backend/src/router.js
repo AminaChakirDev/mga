@@ -33,10 +33,13 @@ router.delete("/categories/:id", categoryControllers.destroy);
 router.get("/articles-categories", articleCategoryControllers.getAll);
 router.get("/articles-categories/:id", articleCategoryControllers.getById);
 router.put("/articles-categories/:id", articleCategoryControllers.update);
-router.post("/articles-categories", articleCategoryControllers.post);
 router.delete(
   "/articles/:articleId/categories/:categoryId",
   articleCategoryControllers.removeCategory
+);
+router.post(
+  "/articles/:articleId/categories/",
+  articleCategoryControllers.addCategory
 );
 
 router.get(

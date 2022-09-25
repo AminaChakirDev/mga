@@ -8,7 +8,7 @@ export default function CategoriesCheckbox({
 }) {
   const [categories, setCategories] = useState("");
 
-  // Récupère la liste des catégories à cocher/décocher
+  // Récupère la liste des catégories
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/categories`)
@@ -22,8 +22,10 @@ export default function CategoriesCheckbox({
       defaultValue={selectedCategories}
       // option : catégories proposées dans la liste déroulante
       options={categories}
+      // peut choisir plusieurs valeurs
       isMulti
-      onChange={(e) => setSelectedCategories(e)}
+      onChange={setSelectedCategories}
+      placeholder="Affecter une ou plusieurs catégories"
     />
   );
 }

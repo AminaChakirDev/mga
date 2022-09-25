@@ -46,22 +46,21 @@ const update = (req, res) => {
 
   // TODO validations (length, format...)
 
-  article.id = parseInt(req.params.id, 10);
-
+  models.article.update(article).then(([result]) => {
+    if (result.affectedRows === 0) {
+      res.sendStatus(404);
+    } else {
+      res.sendStatus(204);
+    }
+  });
   models.article
-    .update(article)
-    .then(models.article.deleteCategories(article.id))
-    .then(
-      article.categories &&
-        article.categories.map((category) =>
-          models.article.insertCategories(article.id, category)
-        )
-    )
-    .then(([result]) => {
-      if (result.affectedRows === 0) {
-        res.sendStatus(404);
-      } else {
-        res.sendStatus(204);
+    .deleteCategories(article.id)
+    .then(() => {
+      for (let i = 0; i < article.categories.length; i += 1) {
+        models.article.insertCategories(
+          article.id,
+          article.categories[i].value
+        );
       }
     })
     .catch((err) => {
@@ -84,7 +83,7 @@ const post = (req, res) => {
         .send(`${result.insertId}`);
       article.categories &&
         article.categories.map((category) =>
-          models.article.insertCategories(`${result.insertId}`, category)
+          models.article.insertCategories(`${result.insertId}`, category.value)
         );
     })
     .catch((err) => {
@@ -107,6 +106,7 @@ const destroy = (req, res) => {
       console.error(err);
       res.sendStatus(500);
     });
+  models.article.deleteCategories(req.params.id);
 };
 
 module.exports = {

@@ -62,13 +62,15 @@ const update = (req, res) => {
     });
 };
 
-const post = (req, res) => {
+const addCategory = (req, res) => {
   const articleCategory = req.body;
+
+  const articleId = parseInt(req.params.id, 10);
 
   // TODO validations (length, format...)
 
   models.article_category
-    .insert(articleCategory)
+    .insert(articleId, articleCategory.value)
     .then(([result]) => {
       res.location(`/articles-categories/${result.insertId}`).sendStatus(201);
     })
@@ -118,7 +120,7 @@ module.exports = {
   getAllByArticleId,
   getById,
   update,
-  post,
+  addCategory,
   removeCategory,
   deleteAllByArticleId,
 };

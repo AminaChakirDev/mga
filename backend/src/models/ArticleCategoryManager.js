@@ -17,10 +17,10 @@ class ArticleCategoryManager extends AbstractManager {
     );
   }
 
-  insert(articleCategory) {
+  insert(articleId, categoryId) {
     return this.connection.query(
       `insert into ${this.table} (article_id, category_id) values (?, ?)`,
-      [articleCategory.articleId, articleCategory.categoryId]
+      [articleId, categoryId]
     );
   }
 

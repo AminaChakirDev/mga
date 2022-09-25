@@ -13,7 +13,7 @@ export default function AdminArticlesPage() {
       .get(`${import.meta.env.VITE_BACKEND_URL}/articles`)
       .then((response) => response.data)
       .then((data) => setArticles(data));
-  }, []);
+  }, [articles]);
 
   return (
     <div>

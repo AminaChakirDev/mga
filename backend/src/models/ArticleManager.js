@@ -42,10 +42,10 @@ class ArticleManager extends AbstractManager {
     );
   }
 
-  insertCategories(newArticleId, category) {
+  insertCategories(articleId, category) {
     return this.connection.query(
       `insert into article_category (article_id, category_id) values (?, ?)`,
-      [newArticleId, category.value]
+      [articleId, category]
     );
   }
 
