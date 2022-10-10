@@ -1,5 +1,5 @@
 const express = require("express");
-const fs = require("fs");
+// const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
 const router = require("./router");
@@ -26,20 +26,20 @@ app.use(express.static(path.join(__dirname, "..", "..", "frontend", "dist")));
 app.use(router);
 
 // Redirect all requests to the REACT app
-const reactIndexFile = path.join(
-  __dirname,
-  "..",
-  "..",
-  "frontend",
-  "dist",
-  "index.html"
-);
+// const reactIndexFile = path.join(
+//   __dirname,
+//   "..",
+//   "..",
+//   "frontend",
+//   "dist",
+//   "index.html"
+// );
 
-if (fs.existsSync(reactIndexFile)) {
-  app.get("*", (req, res) => {
-    res.sendFile(reactIndexFile);
-  });
-}
+// if (fs.existsSync(reactIndexFile)) {
+//   app.get("*", (req, res) => {
+//     res.sendFile(reactIndexFile);
+//   });
+// }
 
 // ready to export
 module.exports = app;
