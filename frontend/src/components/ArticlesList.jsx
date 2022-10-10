@@ -21,6 +21,9 @@ export default function ArticlesList() {
             <Article article={article} />
           </Link>
         ))}
+      <Link to="/admin/articles">
+        <p>Vers l'admin</p>
+      </Link>
     </div>
   );
 }
