@@ -2,17 +2,17 @@ const express = require("express");
 
 const router = express.Router();
 
-const itemControllers = require("./controllers/itemControllers");
+// const itemControllers = require("./controllers/itemControllers");
 const articleControllers = require("./controllers/articleControllers");
 const userControllers = require("./controllers/userControllers");
 const categoryControllers = require("./controllers/categoryControllers");
 const articleCategoryControllers = require("./controllers/articleCategoryControllers");
 
-router.get("/items", itemControllers.browse);
-router.get("/items/:id", itemControllers.read);
-router.put("/items/:id", itemControllers.edit);
-router.post("/items", itemControllers.add);
-router.delete("/items/:id", itemControllers.destroy);
+// router.get("/items", itemControllers.browse);
+// router.get("/items/:id", itemControllers.read);
+// router.put("/items/:id", itemControllers.edit);
+// router.post("/items", itemControllers.add);
+// router.delete("/items/:id", itemControllers.destroy);
 
 router.get("/articles", articleControllers.getAll);
 router.get("/articles/latest", articleControllers.getLatest);
